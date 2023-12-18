@@ -3,6 +3,7 @@ package com.blogs.app.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +23,9 @@ public class PostServiceImpl implements PostService {
 
 	@Autowired
 	private PostRepository postRepository;
+	
+	@Autowired 
+	ModelMapper modelMapper;
 
 	@Override
 	public PostDto createPost(PostDto postDto) {
@@ -76,20 +80,11 @@ public class PostServiceImpl implements PostService {
 	}
 
 	private PostDto mapToDto(Post post) {
-		PostDto dto = new PostDto();
-		dto.setId(post.getId());
-		dto.setTitle(post.getTitle());
-		dto.setContent(post.getContent());
-		dto.setDescription(post.getDescription());
-		return dto;
+		return modelMapper.map(post, PostDto.class);
 	}
 
 	private Post mapToPost(PostDto postDto) {
-		Post post = new Post();
-		post.setTitle(postDto.getTitle());
-		post.setDescription(postDto.getDescription());
-		post.setContent(postDto.getContent());
-		return post;
+		return modelMapper.map(postDto, Post.class);
 	}
 
 }
